@@ -101,6 +101,11 @@ func Init(ctx context.Context, opts ...Option) (func(), error) {
 		}
 	}
 
+	err = InitUser(injector.UserSrv, injector.RollSrv, injector.MenuSrv)
+	if err != nil {
+		return nil, err
+	}
+
 	httpServerCleanFunc := InitHTTPServer(ctx, injector.Engine)
 
 	return func() {

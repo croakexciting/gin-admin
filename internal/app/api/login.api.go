@@ -87,6 +87,34 @@ func (a *LoginAPI) Login(c *gin.Context) {
 	ginx.ResSuccess(c, tokenInfo)
 }
 
+func (a *LoginAPI) LoginWithoutCaptcha(c *gin.Context) {
+	ctx := c.Request.Context()
+	var item schema.LoginWithoutCaptcha
+	if err := ginx.ParseJSON(c, &item); err != nil {
+		ginx.ResError(c, err)
+		return
+	}
+
+	user, err := a.LoginSrv.Verify(ctx, item.UserName, item.Password)
+	if err != nil {
+		ginx.ResError(c, err)
+		return
+	}
+
+	tokenInfo, err := a.LoginSrv.GenerateToken(ctx, a.formatTokenUserID(user.ID, user.UserName))
+	if err != nil {
+		ginx.ResError(c, err)
+		return
+	}
+
+	ctx = logger.NewUserIDContext(ctx, user.ID)
+	ctx = logger.NewUserNameContext(ctx, user.UserName)
+	ctx = logger.NewTagContext(ctx, "__login__")
+	logger.WithContext(ctx).Infof("login")
+
+	ginx.ResSuccess(c, tokenInfo)
+}
+
 func (a *LoginAPI) formatTokenUserID(userID uint64, userName string) string {
 	return fmt.Sprintf("%d-%s", userID, userName)
 }

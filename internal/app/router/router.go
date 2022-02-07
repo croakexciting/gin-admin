@@ -61,7 +61,8 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 			{
 				gLogin.GET("captchaid", a.LoginAPI.GetCaptcha)
 				gLogin.GET("captcha", a.LoginAPI.ResCaptcha)
-				gLogin.POST("", a.LoginAPI.Login)
+				//gLogin.POST("", a.LoginAPI.Login)
+				gLogin.POST("", a.LoginAPI.LoginWithoutCaptcha)
 				gLogin.POST("exit", a.LoginAPI.Logout)
 			}
 

@@ -16,4 +16,6 @@ type Injector struct {
 	Auth           auth.Auther
 	CasbinEnforcer *casbin.SyncedEnforcer
 	MenuSrv        *service.MenuSrv
+	RollSrv        *service.RoleSrv
+	UserSrv        *service.UserSrv
 }

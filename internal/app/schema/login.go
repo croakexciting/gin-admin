@@ -7,6 +7,11 @@ type LoginParam struct {
 	CaptchaCode string `json:"captcha_code" binding:"required"` // 验证码
 }
 
+type LoginWithoutCaptcha struct {
+	UserName string `json:"user_name" binding:"required"` // 用户名
+	Password string `json:"password" binding:"required"`  // 密码(md5加密)
+}
+
 type UserLoginInfo struct {
 	UserID   uint64 `json:"user_id,string"` // 用户ID
 	UserName string `json:"user_name"`      // 用户名

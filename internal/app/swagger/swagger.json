@@ -572,7 +572,7 @@
                 "tags": [
                     "LoginAPI"
                 ],
-                "summary": "用户登录",
+                "summary": "用户登录，不用验证码",
                 "parameters": [
                     {
                         "description": "请求参数",
@@ -580,7 +580,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schema.LoginParam"
+                            "$ref": "#/definitions/schema.LoginWithoutCaptcha"
                         }
                     }
                 ],
@@ -1515,9 +1515,7 @@
         "schema.ListResult": {
             "type": "object",
             "properties": {
-                "list": {
-                    "type": "object"
-                },
+                "list": {},
                 "pagination": {
                     "$ref": "#/definitions/schema.PaginationResult"
                 }
@@ -1528,33 +1526,6 @@
             "properties": {
                 "captcha_id": {
                     "description": "验证码ID",
-                    "type": "string"
-                }
-            }
-        },
-        "schema.LoginParam": {
-            "type": "object",
-            "required": [
-                "captcha_code",
-                "captcha_id",
-                "password",
-                "user_name"
-            ],
-            "properties": {
-                "captcha_code": {
-                    "description": "验证码",
-                    "type": "string"
-                },
-                "captcha_id": {
-                    "description": "验证码ID",
-                    "type": "string"
-                },
-                "password": {
-                    "description": "密码(md5加密)",
-                    "type": "string"
-                },
-                "user_name": {
-                    "description": "用户名",
                     "type": "string"
                 }
             }
@@ -1572,6 +1543,23 @@
                 },
                 "token_type": {
                     "description": "令牌类型",
+                    "type": "string"
+                }
+            }
+        },
+        "schema.LoginWithoutCaptcha": {
+            "type": "object",
+            "required": [
+                "password",
+                "user_name"
+            ],
+            "properties": {
+                "password": {
+                    "description": "密码(md5加密)",
+                    "type": "string"
+                },
+                "user_name": {
+                    "description": "用户名",
                     "type": "string"
                 }
             }
@@ -1610,7 +1598,9 @@
                 },
                 "is_show": {
                     "description": "是否显示(1:显示 2:隐藏)",
-                    "type": "integer"
+                    "type": "integer",
+                    "maximum": 2,
+                    "minimum": 1
                 },
                 "memo": {
                     "description": "备注",
@@ -1639,7 +1629,9 @@
                 },
                 "status": {
                     "description": "状态(1:启用 2:禁用)",
-                    "type": "integer"
+                    "type": "integer",
+                    "maximum": 2,
+                    "minimum": 1
                 },
                 "updated_at": {
                     "description": "更新时间",
@@ -1822,7 +1814,9 @@
                 },
                 "status": {
                     "description": "状态(1:启用 2:禁用)",
-                    "type": "integer"
+                    "type": "integer",
+                    "maximum": 2,
+                    "minimum": 1
                 },
                 "updated_at": {
                     "description": "更新时间",
@@ -1925,7 +1919,9 @@
                 },
                 "status": {
                     "description": "用户状态(1:启用 2:停用)",
-                    "type": "integer"
+                    "type": "integer",
+                    "maximum": 2,
+                    "minimum": 1
                 },
                 "user_name": {
                     "description": "用户名",

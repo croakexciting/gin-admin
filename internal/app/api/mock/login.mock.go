@@ -30,13 +30,13 @@ func (a *LoginMock) ResCaptcha(c *gin.Context) {
 }
 
 // @Tags LoginAPI
-// @Summary 用户登录
-// @Param body body schema.LoginParam true "请求参数"
+// @Summary 用户登录，不用验证码
+// @Param body body schema.LoginWithoutCaptcha true "请求参数"
 // @Success 200 {object} schema.LoginTokenInfo
 // @Failure 400 {object} schema.ErrorResult "{error:{code:0,message:bad request}}"
 // @Failure 500 {object} schema.ErrorResult "{error:{code:0,message:internal server error}}"
 // @Router /api/v1/pub/login [post]
-func (a *LoginMock) Login(c *gin.Context) {
+func (a *LoginMock) LoginWithoutCaptcha(c *gin.Context) {
 }
 
 // @Tags LoginAPI
