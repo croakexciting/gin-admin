@@ -29,8 +29,26 @@ func InitRole(r *service.RoleSrv, m *service.MenuSrv) (*schema.IDResult, error) 
 	if len(rResult.Data) == 0 {
 		_, err = r.Create(ctx, schema.Role{
 			Name:     "worker",
-			Sequence: 6,
+			Sequence: 1000000,
 			Status:   1,
+			RoleMenus: schema.RoleMenus{
+				&schema.RoleMenu{
+					MenuID:   mData[1].ID,
+					ActionID: mData[1].Actions[0].ID,
+				},
+				&schema.RoleMenu{
+					MenuID:   mData[1].ID,
+					ActionID: mData[1].Actions[1].ID,
+				},
+				&schema.RoleMenu{
+					MenuID:   mData[1].ID,
+					ActionID: mData[1].Actions[2].ID,
+				},
+				&schema.RoleMenu{
+					MenuID:   mData[1].ID,
+					ActionID: mData[1].Actions[3].ID,
+				},
+			},
 		})
 		if err != nil {
 			return nil, err
@@ -45,7 +63,7 @@ func InitRole(r *service.RoleSrv, m *service.MenuSrv) (*schema.IDResult, error) 
 	if len(rResult.Data) == 0 {
 		return r.Create(ctx, schema.Role{
 			Name:     "admin",
-			Sequence: 9,
+			Sequence: 1,
 			Status:   1,
 			RoleMenus: schema.RoleMenus{
 				&schema.RoleMenu{
@@ -71,6 +89,22 @@ func InitRole(r *service.RoleSrv, m *service.MenuSrv) (*schema.IDResult, error) 
 				&schema.RoleMenu{
 					MenuID:   mData[0].ID,
 					ActionID: mData[0].Actions[5].ID,
+				},
+				&schema.RoleMenu{
+					MenuID:   mData[1].ID,
+					ActionID: mData[1].Actions[0].ID,
+				},
+				&schema.RoleMenu{
+					MenuID:   mData[1].ID,
+					ActionID: mData[1].Actions[1].ID,
+				},
+				&schema.RoleMenu{
+					MenuID:   mData[1].ID,
+					ActionID: mData[1].Actions[2].ID,
+				},
+				&schema.RoleMenu{
+					MenuID:   mData[1].ID,
+					ActionID: mData[1].Actions[3].ID,
 				},
 			},
 		})

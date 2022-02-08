@@ -41,3 +41,31 @@
       resources:
         - method: PATCH
           path: "/api/v1/users/:id/enable"
+
+- name: 示例
+  icon: table
+  router: "/system/demo"
+  sequence: 8
+  actions:
+    - code: add
+      name: 新增
+      resources:
+        - method: POST
+          path: "/api/v1/demos"
+    - code: edit
+      name: 编辑
+      resources:
+        - method: GET
+          path: "/api/v1/demos/:id"
+        - method: PUT
+          path: "/api/v1/demos/:id"
+    - code: del
+      name: 删除
+      resources:
+        - method: DELETE
+          path: "/api/v1/demos/:id"
+    - code: query
+      name: 查询
+      resources:
+        - method: GET
+          path: "/api/v1/demos"

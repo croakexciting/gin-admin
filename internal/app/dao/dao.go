@@ -7,6 +7,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/LyricTian/gin-admin/v8/internal/app/config"
+	"github.com/LyricTian/gin-admin/v8/internal/app/dao/demo"
 	"github.com/LyricTian/gin-admin/v8/internal/app/dao/menu"
 	"github.com/LyricTian/gin-admin/v8/internal/app/dao/role"
 	"github.com/LyricTian/gin-admin/v8/internal/app/dao/user"
@@ -23,6 +24,7 @@ var RepoSet = wire.NewSet(
 	role.RoleSet,
 	user.UserRoleSet,
 	user.UserSet,
+	demo.DemoSet,
 ) // end
 
 // Define repo type alias
@@ -35,6 +37,7 @@ type (
 	RoleRepo               = role.RoleRepo
 	UserRoleRepo           = user.UserRoleRepo
 	UserRepo               = user.UserRepo
+	DemoRepo               = demo.DemoRepo
 ) // end
 
 // Auto migration for given models
@@ -51,5 +54,6 @@ func AutoMigrate(db *gorm.DB) error {
 		new(role.Role),
 		new(user.UserRole),
 		new(user.User),
+		new(demo.Demo),
 	) // end
 }

@@ -8,6 +8,7 @@ package app
 
 import (
 	"github.com/LyricTian/gin-admin/v8/internal/app/api"
+	"github.com/LyricTian/gin-admin/v8/internal/app/dao/demo"
 	"github.com/LyricTian/gin-admin/v8/internal/app/dao/menu"
 	"github.com/LyricTian/gin-admin/v8/internal/app/dao/role"
 	"github.com/LyricTian/gin-admin/v8/internal/app/dao/user"
@@ -112,6 +113,16 @@ func BuildInjector() (*Injector, func(), error) {
 	userAPI := &api.UserAPI{
 		UserSrv: userSrv,
 	}
+	demoRepo := &demo.DemoRepo{
+		DB: db,
+	}
+	demoSrv := &service.DemoSrv{
+		TransRepo: trans,
+		DemoRepo:  demoRepo,
+	}
+	demoAPI := &api.DemoAPI{
+		DemoSrv: demoSrv,
+	}
 	routerRouter := &router.Router{
 		Auth:           auther,
 		CasbinEnforcer: syncedEnforcer,
@@ -119,6 +130,7 @@ func BuildInjector() (*Injector, func(), error) {
 		MenuAPI:        menuAPI,
 		RoleAPI:        roleAPI,
 		UserAPI:        userAPI,
+		DemoAPI:        demoAPI,
 	}
 	engine := InitGinEngine(routerRouter)
 	injector := &Injector{

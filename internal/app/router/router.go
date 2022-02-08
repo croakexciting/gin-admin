@@ -26,6 +26,7 @@ type Router struct {
 	MenuAPI        *api.MenuAPI
 	RoleAPI        *api.RoleAPI
 	UserAPI        *api.UserAPI
+	DemoAPI        *api.DemoAPI
 } // end
 
 func (a *Router) Register(app *gin.Engine) error {
@@ -109,5 +110,16 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 			gUser.PATCH(":id/enable", a.UserAPI.Enable)
 			gUser.PATCH(":id/disable", a.UserAPI.Disable)
 		}
+
+		gDemo := v1.Group("demos")
+		{
+			gDemo.GET("", a.DemoAPI.Query)
+			gDemo.GET(":id", a.DemoAPI.Get)
+			gDemo.POST("", a.DemoAPI.Create)
+			gDemo.PUT(":id", a.DemoAPI.Update)
+			gDemo.DELETE(":id", a.DemoAPI.Delete)
+
+		}
+
 	} // v1 end
 }
