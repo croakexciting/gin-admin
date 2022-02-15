@@ -1,0 +1,53 @@
+version: "3"
+
+volumes:
+  postgres: {}
+  caddy_data:
+  caddy_config:
+  
+services:  
+  postgres:
+    image: "postgres:12-alpine"
+    env_file:
+      - ./.envs/.postgres
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    restart: "${DOCKER_RESTART_POLICY:-unless-stopped}"
+    networks: 
+      - bridge_network
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend/Dockerfile
+    image: gin-backend:latest
+    container_name: gin-backend
+    command: /gin-admin/gin-admin web -c /gin-admin/configs/config.toml -m /gin-admin/configs/model.conf --menu /gin-admin/configs/menu.yaml
+    depends_on:
+      - postgres
+    expose:
+      - 10088
+    ports:
+      - 10088:10088
+    restart: "${DOCKER_RESTART_POLICY:-unless-stopped}"
+    networks: 
+      - bridge_network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend/Dockerfile
+    image: gin-frontend:latest
+    container_name: gin-frontend
+    restart: unless-stopped
+    ports:
+      - 80:80
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+    networks: 
+      - bridge_network
+
+networks:
+  bridge_network:
+    driver: bridge

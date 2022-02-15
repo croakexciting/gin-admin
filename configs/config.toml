@@ -199,13 +199,13 @@ Parameters = "charset=utf8mb4&parseTime=True&loc=Local&allowNativePasswords=true
 
 [Postgres]
 # 连接地址
-Host = "127.0.0.1"
+Host = "postgres"
 # 连接端口
 Port = 5432
 # 用户名
-User = "postgres"
+User = "ginadmin"
 # 密码
-Password = "henxiao1"
+Password = "ginadmin"
 # 数据库
 DBName = "ginadmin"
 # SSL模式
