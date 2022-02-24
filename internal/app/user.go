@@ -3,8 +3,8 @@ package app
 import (
 	"context"
 
-	"github.com/LyricTian/gin-admin/v8/internal/app/schema"
-	"github.com/LyricTian/gin-admin/v8/internal/app/service"
+	"dishes-admin-mod/internal/app/schema"
+	"dishes-admin-mod/internal/app/service"
 )
 
 func InitRole(r *service.RoleSrv, m *service.MenuSrv) (*schema.IDResult, error) {
@@ -60,53 +60,23 @@ func InitRole(r *service.RoleSrv, m *service.MenuSrv) (*schema.IDResult, error) 
 	if err != nil {
 		return nil, err
 	}
+
+	var rm schema.RoleMenus
+
+	for _, v1 := range mData {
+		for _, v2 := range v1.Actions {
+			rm = append(rm, &schema.RoleMenu{
+				MenuID:   v1.ID,
+				ActionID: v2.ID,
+			})
+		}
+	}
 	if len(rResult.Data) == 0 {
 		return r.Create(ctx, schema.Role{
-			Name:     "admin",
-			Sequence: 1,
-			Status:   1,
-			RoleMenus: schema.RoleMenus{
-				&schema.RoleMenu{
-					MenuID:   mData[0].ID,
-					ActionID: mData[0].Actions[0].ID,
-				},
-				&schema.RoleMenu{
-					MenuID:   mData[0].ID,
-					ActionID: mData[0].Actions[1].ID,
-				},
-				&schema.RoleMenu{
-					MenuID:   mData[0].ID,
-					ActionID: mData[0].Actions[2].ID,
-				},
-				&schema.RoleMenu{
-					MenuID:   mData[0].ID,
-					ActionID: mData[0].Actions[3].ID,
-				},
-				&schema.RoleMenu{
-					MenuID:   mData[0].ID,
-					ActionID: mData[0].Actions[4].ID,
-				},
-				&schema.RoleMenu{
-					MenuID:   mData[0].ID,
-					ActionID: mData[0].Actions[5].ID,
-				},
-				&schema.RoleMenu{
-					MenuID:   mData[1].ID,
-					ActionID: mData[1].Actions[0].ID,
-				},
-				&schema.RoleMenu{
-					MenuID:   mData[1].ID,
-					ActionID: mData[1].Actions[1].ID,
-				},
-				&schema.RoleMenu{
-					MenuID:   mData[1].ID,
-					ActionID: mData[1].Actions[2].ID,
-				},
-				&schema.RoleMenu{
-					MenuID:   mData[1].ID,
-					ActionID: mData[1].Actions[3].ID,
-				},
-			},
+			Name:      "admin",
+			Sequence:  1,
+			Status:    1,
+			RoleMenus: rm,
 		})
 	} else {
 		return &schema.IDResult{ID: rResult.Data[0].ID}, nil

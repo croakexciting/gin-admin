@@ -8,7 +8,7 @@ import (
 
 	"github.com/koding/multiconfig"
 
-	"github.com/LyricTian/gin-admin/v8/pkg/util/json"
+	"dishes-admin-mod/pkg/util/json"
 )
 
 var (
@@ -78,6 +78,7 @@ type Config struct {
 	MySQL        MySQL
 	Postgres     Postgres
 	Sqlite3      Sqlite3
+	FileServer   FileServer
 }
 
 func (c *Config) IsDebugMode() bool {
@@ -243,4 +244,9 @@ type Sqlite3 struct {
 
 func (a Sqlite3) DSN() string {
 	return a.Path
+}
+
+type FileServer struct {
+	Directory string
+	Url       string
 }

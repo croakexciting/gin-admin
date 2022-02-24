@@ -8,17 +8,18 @@ package app
 import (
 	"github.com/google/wire"
 
-	"github.com/LyricTian/gin-admin/v8/internal/app/api"
-	"github.com/LyricTian/gin-admin/v8/internal/app/dao"
-	"github.com/LyricTian/gin-admin/v8/internal/app/module/adapter"
-	"github.com/LyricTian/gin-admin/v8/internal/app/router"
-	"github.com/LyricTian/gin-admin/v8/internal/app/service"
+	"dishes-admin-mod/internal/app/api"
+	"dishes-admin-mod/internal/app/dao"
+	"dishes-admin-mod/internal/app/module/adapter"
+	"dishes-admin-mod/internal/app/router"
+	"dishes-admin-mod/internal/app/service"
 )
 
 func BuildInjector() (*Injector, func(), error) {
 	wire.Build(
 		InitGormDB,
 		dao.RepoSet,
+		InitFileServer,
 		InitAuth,
 		InitCasbin,
 		InitGinEngine,

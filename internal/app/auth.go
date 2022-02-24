@@ -3,11 +3,11 @@ package app
 import (
 	jwt "github.com/dgrijalva/jwt-go"
 
-	"github.com/LyricTian/gin-admin/v8/internal/app/config"
-	"github.com/LyricTian/gin-admin/v8/pkg/auth"
-	"github.com/LyricTian/gin-admin/v8/pkg/auth/jwtauth"
-	"github.com/LyricTian/gin-admin/v8/pkg/auth/jwtauth/store/buntdb"
-	"github.com/LyricTian/gin-admin/v8/pkg/auth/jwtauth/store/redis"
+	"dishes-admin-mod/internal/app/config"
+	"dishes-admin-mod/pkg/auth"
+	"dishes-admin-mod/pkg/auth/jwtauth"
+	"dishes-admin-mod/pkg/auth/jwtauth/store/buntdb"
+	"dishes-admin-mod/pkg/auth/jwtauth/store/redis"
 )
 
 func InitAuth() (auth.Auther, func(), error) {

@@ -6,9 +6,9 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	swaggerFiles "github.com/swaggo/gin-swagger/swaggerFiles"
 
-	"github.com/LyricTian/gin-admin/v8/internal/app/config"
-	"github.com/LyricTian/gin-admin/v8/internal/app/middleware"
-	"github.com/LyricTian/gin-admin/v8/internal/app/router"
+	"dishes-admin-mod/internal/app/config"
+	"dishes-admin-mod/internal/app/middleware"
+	"dishes-admin-mod/internal/app/router"
 )
 
 func InitGinEngine(r router.IRouter) *gin.Engine {

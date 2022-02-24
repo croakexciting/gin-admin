@@ -7,19 +7,21 @@
 package app
 
 import (
-	"github.com/LyricTian/gin-admin/v8/internal/app/api"
-	"github.com/LyricTian/gin-admin/v8/internal/app/dao/demo"
-	"github.com/LyricTian/gin-admin/v8/internal/app/dao/menu"
-	"github.com/LyricTian/gin-admin/v8/internal/app/dao/role"
-	"github.com/LyricTian/gin-admin/v8/internal/app/dao/user"
-	"github.com/LyricTian/gin-admin/v8/internal/app/dao/util"
-	"github.com/LyricTian/gin-admin/v8/internal/app/module/adapter"
-	"github.com/LyricTian/gin-admin/v8/internal/app/router"
-	"github.com/LyricTian/gin-admin/v8/internal/app/service"
+	"dishes-admin-mod/internal/app/api"
+	"dishes-admin-mod/internal/app/dao/demo"
+	"dishes-admin-mod/internal/app/dao/firmware"
+	"dishes-admin-mod/internal/app/dao/menu"
+	"dishes-admin-mod/internal/app/dao/product"
+	"dishes-admin-mod/internal/app/dao/role"
+	"dishes-admin-mod/internal/app/dao/user"
+	"dishes-admin-mod/internal/app/dao/util"
+	"dishes-admin-mod/internal/app/module/adapter"
+	"dishes-admin-mod/internal/app/router"
+	"dishes-admin-mod/internal/app/service"
 )
 
 import (
-	_ "github.com/LyricTian/gin-admin/v8/internal/app/swagger"
+	_ "dishes-admin-mod/internal/app/swagger"
 )
 
 // Injectors from wire.go:
@@ -123,6 +125,33 @@ func BuildInjector() (*Injector, func(), error) {
 	demoAPI := &api.DemoAPI{
 		DemoSrv: demoSrv,
 	}
+	productRepo := &product.ProductRepo{
+		DB: db,
+	}
+	productSrv := &service.ProductSrv{
+		TransRepo:   trans,
+		ProductRepo: productRepo,
+	}
+	productAPI := &api.ProductAPI{
+		ProductSrv: productSrv,
+	}
+	unroutedHandler, cleanup4, err := InitFileServer()
+	if err != nil {
+		cleanup3()
+		cleanup2()
+		cleanup()
+		return nil, nil, err
+	}
+	firmwareRepo := &firmware.FirmwareRepo{
+		DB: db,
+	}
+	firmwareSrv := &service.FirmwareSrv{
+		TransRepo:    trans,
+		FirmwareRepo: firmwareRepo,
+	}
+	firmwareAPI := &api.FirmwareAPI{
+		FirmwareSrv: firmwareSrv,
+	}
 	routerRouter := &router.Router{
 		Auth:           auther,
 		CasbinEnforcer: syncedEnforcer,
@@ -131,6 +160,9 @@ func BuildInjector() (*Injector, func(), error) {
 		RoleAPI:        roleAPI,
 		UserAPI:        userAPI,
 		DemoAPI:        demoAPI,
+		ProductAPI:     productAPI,
+		Handler:        unroutedHandler,
+		FirmwareAPI:    firmwareAPI,
 	}
 	engine := InitGinEngine(routerRouter)
 	injector := &Injector{
@@ -142,6 +174,7 @@ func BuildInjector() (*Injector, func(), error) {
 		UserSrv:        userSrv,
 	}
 	return injector, func() {
+		cleanup4()
 		cleanup3()
 		cleanup2()
 		cleanup()

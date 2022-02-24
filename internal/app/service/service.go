@@ -10,4 +10,6 @@ var ServiceSet = wire.NewSet(
 	UserSet,
 	LoginSet,
 	DemoSet,
+	ProductSet,
+	FirmwareSet,
 ) // end

@@ -6,12 +6,14 @@ import (
 	"github.com/google/wire"
 	"gorm.io/gorm"
 
-	"github.com/LyricTian/gin-admin/v8/internal/app/config"
-	"github.com/LyricTian/gin-admin/v8/internal/app/dao/demo"
-	"github.com/LyricTian/gin-admin/v8/internal/app/dao/menu"
-	"github.com/LyricTian/gin-admin/v8/internal/app/dao/role"
-	"github.com/LyricTian/gin-admin/v8/internal/app/dao/user"
-	"github.com/LyricTian/gin-admin/v8/internal/app/dao/util"
+	"dishes-admin-mod/internal/app/config"
+	"dishes-admin-mod/internal/app/dao/demo"
+	"dishes-admin-mod/internal/app/dao/firmware"
+	"dishes-admin-mod/internal/app/dao/menu"
+	"dishes-admin-mod/internal/app/dao/product"
+	"dishes-admin-mod/internal/app/dao/role"
+	"dishes-admin-mod/internal/app/dao/user"
+	"dishes-admin-mod/internal/app/dao/util"
 ) // end
 
 // RepoSet repo injection
@@ -25,6 +27,8 @@ var RepoSet = wire.NewSet(
 	user.UserRoleSet,
 	user.UserSet,
 	demo.DemoSet,
+	product.ProductSet,
+	firmware.FirmwareSet,
 ) // end
 
 // Define repo type alias
@@ -38,6 +42,8 @@ type (
 	UserRoleRepo           = user.UserRoleRepo
 	UserRepo               = user.UserRepo
 	DemoRepo               = demo.DemoRepo
+	ProductRepo            = product.ProductRepo
+	FirmwareRepo           = firmware.FirmwareRepo
 ) // end
 
 // Auto migration for given models
@@ -55,5 +61,8 @@ func AutoMigrate(db *gorm.DB) error {
 		new(user.UserRole),
 		new(user.User),
 		new(demo.Demo),
+		new(product.Product),
+		new(product.Product),
+		new(firmware.Firmware),
 	) // end
 }

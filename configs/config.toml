@@ -199,18 +199,23 @@ Parameters = "charset=utf8mb4&parseTime=True&loc=Local&allowNativePasswords=true
 
 [Postgres]
 # 连接地址
-Host = "postgres"
+Host = "127.0.0.1"
 # 连接端口
 Port = 5432
 # 用户名
-User = "ginadmin"
+User = "postgres"
 # 密码
-Password = "ginadmin"
+Password = "henxiao1"
 # 数据库
-DBName = "ginadmin"
+DBName = "dishes"
 # SSL模式
 SSLMode = "disable"
 
 [Sqlite3]
 # 数据库路径
 Path = "data/gin-admin.db"
+
+[FileServer]
+# 文件服务器
+Directory = "."
+Url = "/files"

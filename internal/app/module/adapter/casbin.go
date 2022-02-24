@@ -8,9 +8,9 @@ import (
 	"github.com/casbin/casbin/v2/persist"
 	"github.com/google/wire"
 
-	"github.com/LyricTian/gin-admin/v8/internal/app/dao"
-	"github.com/LyricTian/gin-admin/v8/internal/app/schema"
-	"github.com/LyricTian/gin-admin/v8/pkg/logger"
+	"dishes-admin-mod/internal/app/dao"
+	"dishes-admin-mod/internal/app/schema"
+	"dishes-admin-mod/pkg/logger"
 )
 
 var _ persist.Adapter = (*CasbinAdapter)(nil)

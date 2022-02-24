@@ -8,4 +8,6 @@ var APISet = wire.NewSet(
 	RoleSet,
 	UserSet,
 	DemoSet,
+	ProductSet,
+	FirmwareSet,
 ) // end

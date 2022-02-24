@@ -4,10 +4,10 @@ import (
 	"context"
 	"time"
 
-	"github.com/LyricTian/gin-admin/v8/internal/app/config"
-	"github.com/LyricTian/gin-admin/v8/pkg/util/hash"
-	"github.com/LyricTian/gin-admin/v8/pkg/util/json"
-	"github.com/LyricTian/gin-admin/v8/pkg/util/structure"
+	"dishes-admin-mod/internal/app/config"
+	"dishes-admin-mod/pkg/util/hash"
+	"dishes-admin-mod/pkg/util/json"
+	"dishes-admin-mod/pkg/util/structure"
 )
 
 // GetRootUser 获取root用户

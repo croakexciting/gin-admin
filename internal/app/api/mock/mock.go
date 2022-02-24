@@ -8,4 +8,7 @@ var MockSet = wire.NewSet(
 	RoleSet,
 	UserSet,
 	DemoSet,
+	ProductSet,
+	ProductSet,
+	FirmwareSet,
 ) // end

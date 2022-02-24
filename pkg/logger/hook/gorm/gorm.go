@@ -8,7 +8,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 
-	"github.com/LyricTian/gin-admin/v8/pkg/logger"
+	"dishes-admin-mod/pkg/logger"
 )
 
 // Create logger hook from gorm

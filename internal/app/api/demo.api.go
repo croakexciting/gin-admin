@@ -4,9 +4,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 
-	"github.com/LyricTian/gin-admin/v8/internal/app/ginx"
-	"github.com/LyricTian/gin-admin/v8/internal/app/schema"
-	"github.com/LyricTian/gin-admin/v8/internal/app/service"
+	"dishes-admin-mod/internal/app/ginx"
+	"dishes-admin-mod/internal/app/schema"
+	"dishes-admin-mod/internal/app/service"
 )
 
 var DemoSet = wire.NewSet(wire.Struct(new(DemoAPI), "*"))

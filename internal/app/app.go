@@ -10,14 +10,15 @@ import (
 	"syscall"
 	"time"
 
+	"dishes-admin-mod/internal/app/config"
+	"dishes-admin-mod/pkg/logger"
+
 	"github.com/LyricTian/captcha"
 	"github.com/LyricTian/captcha/store"
-	"github.com/LyricTian/gin-admin/v8/internal/app/config"
-	"github.com/LyricTian/gin-admin/v8/pkg/logger"
 	"github.com/go-redis/redis"
 	"github.com/google/gops/agent"
 
-	_ "github.com/LyricTian/gin-admin/v8/internal/app/swagger"
+	_ "dishes-admin-mod/internal/app/swagger"
 )
 
 type options struct {

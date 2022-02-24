@@ -3,10 +3,11 @@ package middleware
 import (
 	"strconv"
 
-	"github.com/LyricTian/gin-admin/v8/internal/app/config"
-	"github.com/LyricTian/gin-admin/v8/internal/app/contextx"
-	"github.com/LyricTian/gin-admin/v8/internal/app/ginx"
-	"github.com/LyricTian/gin-admin/v8/pkg/errors"
+	"dishes-admin-mod/internal/app/config"
+	"dishes-admin-mod/internal/app/contextx"
+	"dishes-admin-mod/internal/app/ginx"
+	"dishes-admin-mod/pkg/errors"
+
 	"github.com/casbin/casbin/v2"
 	"github.com/gin-gonic/gin"
 )

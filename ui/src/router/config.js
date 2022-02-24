@@ -47,17 +47,26 @@ const options = {
           ]
         },
         {
-          path: 'demo',
-          name: '示例',
+          path: 'update',
+          name: '固件更新',
           meta: {
-            icon: 'table',
+            icon: 'cloud-download',
           },
           component: PageView,
           children: [
             {
-              path: 'query',
-              name: '示例列表',
-              component: () => import('@/pages/mydemo'),
+              path: 'product',
+              name: '产品',
+              component: () => import('@/pages/product/ProductForm.vue'),
+            },
+            {
+              path: 'product/firmware/:id',
+              name: '固件',
+              meta: {
+                highlight: '/update/product',
+                invisible: true
+              },
+              component: () => import('@/pages/product/FirmwareForm.vue')
             },
           ],
         },

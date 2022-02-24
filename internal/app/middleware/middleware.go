@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/LyricTian/gin-admin/v8/internal/app/ginx"
-	"github.com/LyricTian/gin-admin/v8/pkg/errors"
+	"dishes-admin-mod/internal/app/ginx"
+	"dishes-admin-mod/pkg/errors"
+
 	"github.com/gin-gonic/gin"
 )
 

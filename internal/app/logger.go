@@ -5,10 +5,10 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/LyricTian/gin-admin/v8/internal/app/config"
-	"github.com/LyricTian/gin-admin/v8/pkg/logger"
-	loggerhook "github.com/LyricTian/gin-admin/v8/pkg/logger/hook"
-	loggergormhook "github.com/LyricTian/gin-admin/v8/pkg/logger/hook/gorm"
+	"dishes-admin-mod/internal/app/config"
+	"dishes-admin-mod/pkg/logger"
+	loggerhook "dishes-admin-mod/pkg/logger/hook"
+	loggergormhook "dishes-admin-mod/pkg/logger/hook/gorm"
 
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 )
@@ -28,7 +28,7 @@ func InitLogger() (func(), error) {
 		case "file":
 			if name := c.OutputFile; name != "" {
 				_ = os.MkdirAll(filepath.Dir(name), 0777)
-				
+
 				f, err := rotatelogs.New(name+".%Y-%m-%d",
 					rotatelogs.WithLinkName(name),
 					rotatelogs.WithRotationTime(time.Duration(c.RotationTime)*time.Hour),
@@ -36,7 +36,7 @@ func InitLogger() (func(), error) {
 				if err != nil {
 					return nil, err
 				}
-				
+
 				logger.SetOutput(f)
 				file = f
 			}

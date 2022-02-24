@@ -8,11 +8,11 @@ import (
 	"github.com/LyricTian/captcha"
 	"github.com/google/wire"
 
-	"github.com/LyricTian/gin-admin/v8/internal/app/dao"
-	"github.com/LyricTian/gin-admin/v8/internal/app/schema"
-	"github.com/LyricTian/gin-admin/v8/pkg/auth"
-	"github.com/LyricTian/gin-admin/v8/pkg/errors"
-	"github.com/LyricTian/gin-admin/v8/pkg/util/hash"
+	"dishes-admin-mod/internal/app/dao"
+	"dishes-admin-mod/internal/app/schema"
+	"dishes-admin-mod/pkg/auth"
+	"dishes-admin-mod/pkg/errors"
+	"dishes-admin-mod/pkg/util/hash"
 )
 
 var LoginSet = wire.NewSet(wire.Struct(new(LoginSrv), "*"))

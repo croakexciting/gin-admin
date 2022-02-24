@@ -7,13 +7,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 
-	"github.com/LyricTian/gin-admin/v8/internal/app/config"
-	"github.com/LyricTian/gin-admin/v8/internal/app/contextx"
-	"github.com/LyricTian/gin-admin/v8/internal/app/ginx"
-	"github.com/LyricTian/gin-admin/v8/internal/app/schema"
-	"github.com/LyricTian/gin-admin/v8/internal/app/service"
-	"github.com/LyricTian/gin-admin/v8/pkg/errors"
-	"github.com/LyricTian/gin-admin/v8/pkg/logger"
+	"dishes-admin-mod/internal/app/config"
+	"dishes-admin-mod/internal/app/contextx"
+	"dishes-admin-mod/internal/app/ginx"
+	"dishes-admin-mod/internal/app/schema"
+	"dishes-admin-mod/internal/app/service"
+	"dishes-admin-mod/pkg/errors"
+	"dishes-admin-mod/pkg/logger"
 )
 
 var LoginSet = wire.NewSet(wire.Struct(new(LoginAPI), "*"))

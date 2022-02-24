@@ -3,7 +3,8 @@ package util
 import (
 	"context"
 
-	"github.com/LyricTian/gin-admin/v8/internal/app/contextx"
+	"dishes-admin-mod/internal/app/contextx"
+
 	"github.com/google/wire"
 	"gorm.io/gorm"
 )

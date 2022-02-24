@@ -7,12 +7,12 @@ import (
 
 	"github.com/google/wire"
 
-	"github.com/LyricTian/gin-admin/v8/internal/app/contextx"
-	"github.com/LyricTian/gin-admin/v8/internal/app/dao"
-	"github.com/LyricTian/gin-admin/v8/internal/app/schema"
-	"github.com/LyricTian/gin-admin/v8/pkg/errors"
-	"github.com/LyricTian/gin-admin/v8/pkg/util/snowflake"
-	"github.com/LyricTian/gin-admin/v8/pkg/util/yaml"
+	"dishes-admin-mod/internal/app/contextx"
+	"dishes-admin-mod/internal/app/dao"
+	"dishes-admin-mod/internal/app/schema"
+	"dishes-admin-mod/pkg/errors"
+	"dishes-admin-mod/pkg/util/snowflake"
+	"dishes-admin-mod/pkg/util/yaml"
 )
 
 var MenuSet = wire.NewSet(wire.Struct(new(MenuSrv), "*"))

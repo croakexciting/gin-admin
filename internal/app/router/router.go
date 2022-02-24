@@ -1,13 +1,17 @@
 package router
 
 import (
+	"net/http"
+
 	"github.com/casbin/casbin/v2"
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
+	"github.com/tus/tusd/pkg/handler"
 
-	"github.com/LyricTian/gin-admin/v8/internal/app/api"
-	"github.com/LyricTian/gin-admin/v8/internal/app/middleware"
-	"github.com/LyricTian/gin-admin/v8/pkg/auth"
+	"dishes-admin-mod/internal/app/api"
+	"dishes-admin-mod/internal/app/config"
+	"dishes-admin-mod/internal/app/middleware"
+	"dishes-admin-mod/pkg/auth"
 )
 
 var _ IRouter = (*Router)(nil)
@@ -27,6 +31,9 @@ type Router struct {
 	RoleAPI        *api.RoleAPI
 	UserAPI        *api.UserAPI
 	DemoAPI        *api.DemoAPI
+	ProductAPI     *api.ProductAPI
+	Handler        *handler.UnroutedHandler
+	FirmwareAPI    *api.FirmwareAPI
 } // end
 
 func (a *Router) Register(app *gin.Engine) error {
@@ -119,6 +126,27 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 			gDemo.PUT(":id", a.DemoAPI.Update)
 			gDemo.DELETE(":id", a.DemoAPI.Delete)
 
+		}
+
+		gProduct := v1.Group("products")
+		{
+			gProduct.GET("", a.ProductAPI.Query)
+			gProduct.GET(":id", a.ProductAPI.Get)
+			gProduct.POST("", a.ProductAPI.Create)
+			gProduct.PUT(":id", a.ProductAPI.Update)
+			gProduct.DELETE(":id", a.ProductAPI.Delete)
+
+		}
+
+		gFirmware := v1.Group("firmwares")
+		{
+			gFirmware.GET("", a.FirmwareAPI.Query)
+			gFirmware.GET(":id", a.FirmwareAPI.Get)
+			gFirmware.POST("", a.FirmwareAPI.Create)
+			gFirmware.POST("upload/:productID/:version", a.FirmwareAPI.UploadFile)
+			gFirmware.PUT(":id", a.FirmwareAPI.Update)
+			gFirmware.DELETE(":id", a.FirmwareAPI.Delete)
+			gFirmware.StaticFS("downloads", http.Dir(config.C.FileServer.Directory))
 		}
 
 	} // v1 end
