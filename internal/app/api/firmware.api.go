@@ -93,7 +93,7 @@ func (a *FirmwareAPI) UploadFile(c *gin.Context) {
 	}
 
 	filename := header.Filename
-	err = a.FirmwareSrv.UploadFile(ctx, file, filename, ginx.ParseParamID(c, "productID"), c.Param("version"))
+	err = a.FirmwareSrv.UploadFile(ctx, file, filename, ginx.ParseParamID(c, "productID"), c.Param("stage"), c.Param("version"))
 	if err != nil {
 		ginx.ResError(c, err)
 		return

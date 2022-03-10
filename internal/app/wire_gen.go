@@ -9,10 +9,12 @@ package app
 import (
 	"dishes-admin-mod/internal/app/api"
 	"dishes-admin-mod/internal/app/dao/demo"
+	"dishes-admin-mod/internal/app/dao/device"
 	"dishes-admin-mod/internal/app/dao/firmware"
 	"dishes-admin-mod/internal/app/dao/menu"
 	"dishes-admin-mod/internal/app/dao/product"
 	"dishes-admin-mod/internal/app/dao/role"
+	"dishes-admin-mod/internal/app/dao/upgrade"
 	"dishes-admin-mod/internal/app/dao/user"
 	"dishes-admin-mod/internal/app/dao/util"
 	"dishes-admin-mod/internal/app/module/adapter"
@@ -145,12 +147,50 @@ func BuildInjector() (*Injector, func(), error) {
 	firmwareRepo := &firmware.FirmwareRepo{
 		DB: db,
 	}
+	deviceRepo := &device.DeviceRepo{
+		DB: db,
+	}
+	upgradeRepo := &upgrade.UpgradeRepo{
+		DB: db,
+	}
 	firmwareSrv := &service.FirmwareSrv{
 		TransRepo:    trans,
 		FirmwareRepo: firmwareRepo,
+		DeviceRepo:   deviceRepo,
+		UpgradeRepo:  upgradeRepo,
 	}
 	firmwareAPI := &api.FirmwareAPI{
 		FirmwareSrv: firmwareSrv,
+	}
+	update, cleanup5, err := InitUpdate()
+	if err != nil {
+		cleanup4()
+		cleanup3()
+		cleanup2()
+		cleanup()
+		return nil, nil, err
+	}
+	clientSrv := &service.ClientSrv{
+		DeviceRepo:  deviceRepo,
+		UpgradeRepo: upgradeRepo,
+		Update:      update,
+	}
+	clientAPI := &api.ClientAPI{
+		ClientSrv: clientSrv,
+	}
+	deviceSrv := &service.DeviceSrv{
+		TransRepo:  trans,
+		DeviceRepo: deviceRepo,
+	}
+	deviceAPI := &api.DeviceAPI{
+		DeviceSrv: deviceSrv,
+	}
+	upgradeSrv := &service.UpgradeSrv{
+		TransRepo:   trans,
+		UpgradeRepo: upgradeRepo,
+	}
+	upgradeAPI := &api.UpgradeAPI{
+		UpgradeSrv: upgradeSrv,
 	}
 	routerRouter := &router.Router{
 		Auth:           auther,
@@ -163,6 +203,9 @@ func BuildInjector() (*Injector, func(), error) {
 		ProductAPI:     productAPI,
 		Handler:        unroutedHandler,
 		FirmwareAPI:    firmwareAPI,
+		ClientAPI:      clientAPI,
+		DeviceAPI:      deviceAPI,
+		UpgradeAPI:     upgradeAPI,
 	}
 	engine := InitGinEngine(routerRouter)
 	injector := &Injector{
@@ -174,6 +217,7 @@ func BuildInjector() (*Injector, func(), error) {
 		UserSrv:        userSrv,
 	}
 	return injector, func() {
+		cleanup5()
 		cleanup4()
 		cleanup3()
 		cleanup2()

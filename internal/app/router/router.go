@@ -34,6 +34,9 @@ type Router struct {
 	ProductAPI     *api.ProductAPI
 	Handler        *handler.UnroutedHandler
 	FirmwareAPI    *api.FirmwareAPI
+	ClientAPI      *api.ClientAPI
+	DeviceAPI      *api.DeviceAPI
+	UpgradeAPI     *api.UpgradeAPI
 } // end
 
 func (a *Router) Register(app *gin.Engine) error {
@@ -143,10 +146,34 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 			gFirmware.GET("", a.FirmwareAPI.Query)
 			gFirmware.GET(":id", a.FirmwareAPI.Get)
 			gFirmware.POST("", a.FirmwareAPI.Create)
-			gFirmware.POST("upload/:productID/:version", a.FirmwareAPI.UploadFile)
+			gFirmware.POST("upload/:productID/:stage/:version", a.FirmwareAPI.UploadFile)
 			gFirmware.PUT(":id", a.FirmwareAPI.Update)
 			gFirmware.DELETE(":id", a.FirmwareAPI.Delete)
 			gFirmware.StaticFS("downloads", http.Dir(config.C.FileServer.Directory))
+		}
+
+		gClient := v1.Group("client")
+		{
+			gClient.GET("update-command/:device_id", a.ClientAPI.UpdateCommand)
+			gClient.POST("update-event/:upgrade_id", a.ClientAPI.UpdateEvent)
+		}
+
+		gDevice := v1.Group("devices")
+		{
+			gDevice.GET("", a.DeviceAPI.Query)
+			gDevice.GET(":id", a.DeviceAPI.Get)
+			gDevice.POST("", a.DeviceAPI.Create)
+			gDevice.PUT(":id", a.DeviceAPI.Update)
+			gDevice.DELETE(":id", a.DeviceAPI.Delete)
+		}
+
+		gUpgrade := v1.Group("upgrades")
+		{
+			gUpgrade.GET("", a.UpgradeAPI.Query)
+			gUpgrade.GET(":id", a.UpgradeAPI.Get)
+			gUpgrade.POST("", a.UpgradeAPI.Create)
+			gUpgrade.PUT(":id", a.UpgradeAPI.Update)
+			gUpgrade.DELETE(":id", a.UpgradeAPI.Delete)
 		}
 
 	} // v1 end

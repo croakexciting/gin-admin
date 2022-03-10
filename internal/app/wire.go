@@ -23,6 +23,7 @@ func BuildInjector() (*Injector, func(), error) {
 		InitAuth,
 		InitCasbin,
 		InitGinEngine,
+		InitUpdate,
 		service.ServiceSet,
 		api.APISet,
 		router.RouterSet,

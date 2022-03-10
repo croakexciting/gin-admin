@@ -65,9 +65,9 @@
       scopedSlots: { customRender: 'size' },
     },
     {
-      title: '状态',
-      dataIndex: 'status',
-      scopedSlots: { customRender: 'status' },
+      title: '阶段',
+      dataIndex: 'stage',
+      scopedSlots: { customRender: 'stage' },
     },
     {
       title: '操作',

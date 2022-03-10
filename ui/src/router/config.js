@@ -60,13 +60,31 @@ const options = {
               component: () => import('@/pages/product/ProductForm.vue'),
             },
             {
-              path: 'product/firmware/:id',
+              path: 'product/:id/firmware',
               name: '固件',
               meta: {
                 highlight: '/update/product',
                 invisible: true
               },
               component: () => import('@/pages/product/FirmwareForm.vue')
+            },
+            {
+              path: 'product/:id/device',
+              name: '设备',
+              meta: {
+                highlight: '/update/product',
+                invisible: true
+              },
+              component: () => import('@/pages/product/DeviceForm.vue')
+            },
+            {
+              path: 'product/:id/device/:id2/upgrade',
+              name: '更新列表',
+              meta: {
+                highlight: '/update/product',
+                invisible: true
+              },
+              component: () => import('@/pages/product/UpgradeForm.vue')
             },
           ],
         },

@@ -1,13 +1,27 @@
 <template>
   <a-modal v-model="visible" :width="480" title="编辑示例信息" on-ok="handleOk">
     <a-form-model>
-      <a-form-model-item label="版本" prop="version">
-        <a-space>
+      <a-space>
+      <a-form-model-item label="版本" prop="version" style="width: 200px">
           <a-input v-model="form.version"/>
-          <a-button @click="createVersion">选择版本</a-button>
-        </a-space>
       </a-form-model-item>
+      <a-form-model-item label="阶段" prop="stage" style="width: 200px">
+        <a-select v-model="form.stage">
+          <a-select-option value="dev">
+            dev
+          </a-select-option>
+          <a-select-option value="test">
+            test
+          </a-select-option>
+          <a-select-option value="release">
+            release
+          </a-select-option>
+        </a-select>
+      </a-form-model-item>
+      </a-space>
     </a-form-model>
+    <a-space>
+    <a-button @click="createVersion">确定固件版本及阶段</a-button>
 
     <a-upload
       name="file"
@@ -17,7 +31,8 @@
       @change="handleChange"
     >
       <a-button> <a-icon type="upload" /> 选择上传文件 </a-button>
-    </a-upload> 
+    </a-upload>
+    </a-space>
     <template slot="footer">
       <a-button key="back" @click="handleCancel">取消</a-button>
       <a-button
@@ -50,11 +65,13 @@
         other: '',
         roles: [],
         form: {
-          productID: '',
+          product_id: '',
           name: '',
           version: '',
           size: '',
           status: '',
+          failure: 0,
+          stage: '',
         },
         confirmLoading: false,
       }
@@ -62,7 +79,7 @@
     methods: {
       showDialog(row) {
         this.visible = true
-        this.form.productID = this.productID
+        this.form.product_id = (this.productID)
         if (row) {
           this.title = '修改示例'
           this.form = { ...this.form, ...row }
@@ -71,8 +88,8 @@
         }
       },
       createVersion() {
-        this.url = ('/api/v1/firmwares/upload/' + this.form.productID + '/' + this.form.version)
-        this.$message.success('版本选择成功');
+        this.url = ('/api/v1/firmwares/upload/' + this.form.product_id + '/' + this.form.stage + '/' + this.form.version)
+        this.$message.success('选择成功');
       },
       handleChange(info) {
         if (info.file.status !== 'uploading') {
@@ -82,7 +99,7 @@
           this.$message.success(`${info.file.name} 上传成功`);
           this.form.name = info.file.name
           this.form.size =  info.file.size.toString()
-          this.form.status = "未更新"
+          this.form.status = "pending"
         } else if (info.file.status === 'error') {
           this.$message.error(`${info.file.name} file upload failed.`);
           this.visible = false

@@ -25,7 +25,9 @@
       :loading="listLoading"
     >
       <div slot="action" slot-scope="{ record }">
-        <router-link :to="`/update/product/firmware/${record.id}`" >固件</router-link>
+        <router-link :to="`/update/product/${record.id}/device`" >设备</router-link>
+        <a-divider type="vertical" />
+        <router-link :to="`/update/product/${record.id}/firmware`" >固件</router-link>
         <a-divider type="vertical" />
         <a @click="handleShowDialog(record)">编辑</a>
         <a-divider type="vertical" />

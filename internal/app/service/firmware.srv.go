@@ -21,6 +21,8 @@ var FirmwareSet = wire.NewSet(wire.Struct(new(FirmwareSrv), "*"))
 type FirmwareSrv struct {
 	TransRepo    *dao.TransRepo
 	FirmwareRepo *dao.FirmwareRepo
+	DeviceRepo   *dao.DeviceRepo
+	UpgradeRepo  *dao.UpgradeRepo
 }
 
 func (a *FirmwareSrv) Query(ctx context.Context, params schema.FirmwareQueryParam, opts ...schema.FirmwareQueryOptions) (*schema.FirmwareQueryResult, error) {
@@ -46,6 +48,35 @@ func (a *FirmwareSrv) Create(ctx context.Context, item schema.Firmware) (*schema
 	item.ID = snowflake.MustID()
 
 	err := a.TransRepo.Exec(ctx, func(ctx context.Context) error {
+		// 将固件更新信息同步到产品下的相应阶段设备
+
+		result, err := a.DeviceRepo.Query(ctx, schema.DeviceQueryParam{
+			ProductID: item.ProductID,
+			Stage:     item.Stage,
+		})
+
+		if err != nil {
+			return err
+		}
+
+		for _, v := range result.Data {
+			err = a.UpgradeRepo.Create(ctx, schema.Upgrade{
+				ID:         snowflake.MustID(),
+				FirmwareID: item.ID,
+				DeviceID:   v.ID,
+				Version:    item.Version,
+				Status:     "pending",
+				Failure:    0,
+				Name:       item.Name,
+				Size:       item.Size,
+				Stage:      item.Stage,
+			})
+
+			if err != nil {
+				return err
+			}
+		}
+
 		return a.FirmwareRepo.Create(ctx, item)
 	})
 	if err != nil {
@@ -72,6 +103,7 @@ func (a *FirmwareSrv) Update(ctx context.Context, id uint64, item schema.Firmwar
 }
 
 func (a *FirmwareSrv) Delete(ctx context.Context, id uint64) error {
+	//TODO: 删除固件怎么做，需要删除所有设备下的相关记录
 	oldItem, err := a.FirmwareRepo.Get(ctx, id)
 	if err != nil {
 		return err
@@ -84,8 +116,9 @@ func (a *FirmwareSrv) Delete(ctx context.Context, id uint64) error {
 	})
 }
 
-func (a *FirmwareSrv) UploadFile(ctx context.Context, file multipart.File, filename string, productID uint64, version string) error {
-	d := config.C.FileServer.Directory + "/" + strconv.FormatUint(productID, 10) + "/" + version + "/"
+func (a *FirmwareSrv) UploadFile(ctx context.Context, file multipart.File, filename string, productID uint64, stage string, version string) error {
+	println(0)
+	d := config.C.FileServer.Directory + "/" + strconv.FormatUint(productID, 10) + "/" + stage + "/" + version + "/"
 
 	exist, err := a.pathExists(d)
 	if err != nil {
@@ -95,13 +128,27 @@ func (a *FirmwareSrv) UploadFile(ctx context.Context, file multipart.File, filen
 		os.MkdirAll(d, os.ModePerm)
 	}
 
+	exist, err = a.pathExists(d + filename)
+	if err != nil {
+		return err
+	}
+	if exist {
+		if stage == "dev" {
+			os.Remove(d + filename)
+		} else {
+			return errors.New("firmware exists")
+		}
+	}
+
 	out, err := os.Create(d + filename)
 	if err != nil {
 		return err
 	}
 
 	defer out.Close()
+	println(1)
 	_, err = io.Copy(out, file)
+	println(2)
 	if err != nil {
 		return err
 	}

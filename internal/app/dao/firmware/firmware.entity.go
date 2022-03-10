@@ -33,6 +33,8 @@ type Firmware struct {
 	Version   string `gorm:"size:50;index;"` // 版本
 	Size      string `gorm:"size:200;"`      // 大小
 	Status    string `gorm:"size:50"`
+	Failure   int    `gorm:"default:0;"` // 失败次数
+	Stage     string `gorm:"size:50"`    // 固件阶段 dev or test or release
 }
 
 // Convert to Firmware schema

@@ -28,6 +28,43 @@ definitions:
     - code
     - name
     type: object
+  schema.Device:
+    properties:
+      created_at:
+        type: string
+      failure:
+        description: 失败次数
+        type: integer
+      id:
+        example: "0"
+        type: string
+      name:
+        description: 设备名称
+        type: string
+      product_id:
+        example: "0"
+        type: string
+      sn:
+        description: 设备SN
+        type: string
+      stage:
+        description: 设备所属阶段
+        type: string
+      status:
+        description: 设备更新状态
+        type: string
+      updated_at:
+        type: string
+      upgrade_list:
+        items:
+          $ref: '#/definitions/schema.Upgrade'
+        type: array
+      version:
+        description: 当前版本
+        type: string
+    required:
+    - name
+    type: object
   schema.ErrorItem:
     properties:
       code:
@@ -44,6 +81,9 @@ definitions:
     properties:
       created_at:
         type: string
+      failure:
+        description: 失败次数
+        type: integer
       id:
         example: "0"
         type: string
@@ -54,6 +94,9 @@ definitions:
         type: string
       size:
         description: 大小
+        type: string
+      stage:
+        description: 固件阶段 dev or test or release
         type: string
       status:
         description: 更新状态
@@ -378,6 +421,39 @@ definitions:
     - new_password
     - old_password
     type: object
+  schema.Upgrade:
+    properties:
+      created_at:
+        type: string
+      device_id:
+        example: "0"
+        type: string
+      failure:
+        description: 失败次数
+        type: integer
+      firmware_id:
+        example: "0"
+        type: string
+      id:
+        example: "0"
+        type: string
+      name:
+        type: string
+      size:
+        description: 大小
+        type: string
+      stage:
+        description: 固件阶段 dev or test or release
+        type: string
+      status:
+        description: 更新结果
+        type: string
+      updated_at:
+        type: string
+      version:
+        description: 版本号
+        type: string
+    type: object
   schema.User:
     properties:
       created_at:
@@ -652,6 +728,166 @@ paths:
       summary: 更新数据
       tags:
       - 实例
+  /api/v1/devices:
+    get:
+      parameters:
+      - default: 1
+        description: 分页索引
+        in: query
+        name: current
+        required: true
+        type: integer
+      - default: 10
+        description: 分页大小
+        in: query
+        name: pageSize
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Response Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/schema.ListResult'
+            - properties:
+                list:
+                  items:
+                    $ref: '#/definitions/schema.Device'
+                  type: array
+              type: object
+        "401":
+          description: '{error:{code:9999,message:invalid signature}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:internal server error}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 查询数据
+      tags:
+      - 设备
+    post:
+      parameters:
+      - description: 创建数据
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/schema.Device'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.IDResult'
+        "400":
+          description: '{error:{code:0,message:bad request}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+        "401":
+          description: '{error:{code:9999,message:invalid signature}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:internal server error}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 创建数据
+      tags:
+      - 设备
+  /api/v1/devices/{id}:
+    delete:
+      parameters:
+      - description: 唯一标识
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: '{status:OK}'
+          schema:
+            $ref: '#/definitions/schema.StatusResult'
+        "401":
+          description: '{error:{code:9999,message:invalid signature}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:internal server error}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 删除数据
+      tags:
+      - 设备
+    get:
+      parameters:
+      - description: 唯一标识
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.Device'
+        "400":
+          description: '{error:{code:0,message:bad request}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+        "401":
+          description: '{error:{code:9999,message:invalid signature}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:internal server error}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 查询指定数据
+      tags:
+      - 设备
+    put:
+      parameters:
+      - description: 唯一标识
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 更新数据
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/schema.Device'
+      responses:
+        "200":
+          description: '{status:OK}'
+          schema:
+            $ref: '#/definitions/schema.StatusResult'
+        "400":
+          description: '{error:{code:0,message:bad request}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+        "401":
+          description: '{error:{code:9999,message:invalid signature}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:internal server error}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 更新数据
+      tags:
+      - 设备
   /api/v1/firmwares:
     get:
       parameters:
@@ -1664,6 +1900,166 @@ paths:
       summary: 启用数据
       tags:
       - RoleAPI
+  /api/v1/upgrades:
+    get:
+      parameters:
+      - default: 1
+        description: 分页索引
+        in: query
+        name: current
+        required: true
+        type: integer
+      - default: 10
+        description: 分页大小
+        in: query
+        name: pageSize
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Response Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/schema.ListResult'
+            - properties:
+                list:
+                  items:
+                    $ref: '#/definitions/schema.Upgrade'
+                  type: array
+              type: object
+        "401":
+          description: '{error:{code:9999,message:invalid signature}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:internal server error}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 查询数据
+      tags:
+      - 更新记录
+    post:
+      parameters:
+      - description: 创建数据
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/schema.Upgrade'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.IDResult'
+        "400":
+          description: '{error:{code:0,message:bad request}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+        "401":
+          description: '{error:{code:9999,message:invalid signature}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:internal server error}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 创建数据
+      tags:
+      - 更新记录
+  /api/v1/upgrades/{id}:
+    delete:
+      parameters:
+      - description: 唯一标识
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: '{status:OK}'
+          schema:
+            $ref: '#/definitions/schema.StatusResult'
+        "401":
+          description: '{error:{code:9999,message:invalid signature}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:internal server error}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 删除数据
+      tags:
+      - 更新记录
+    get:
+      parameters:
+      - description: 唯一标识
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.Upgrade'
+        "400":
+          description: '{error:{code:0,message:bad request}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+        "401":
+          description: '{error:{code:9999,message:invalid signature}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:internal server error}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 查询指定数据
+      tags:
+      - 更新记录
+    put:
+      parameters:
+      - description: 唯一标识
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 更新数据
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/schema.Upgrade'
+      responses:
+        "200":
+          description: '{status:OK}'
+          schema:
+            $ref: '#/definitions/schema.StatusResult'
+        "400":
+          description: '{error:{code:0,message:bad request}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+        "401":
+          description: '{error:{code:9999,message:invalid signature}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:internal server error}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 更新数据
+      tags:
+      - 更新记录
   /api/v1/users:
     get:
       parameters:

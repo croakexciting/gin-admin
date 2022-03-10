@@ -32,6 +32,13 @@ func (a *FirmwareRepo) Query(ctx context.Context, params schema.FirmwareQueryPar
 	db := GetFirmwareDB(ctx, a.DB)
 
 	// TODO: Your where condition code here...
+	if v := params.ProductID; v != 0 {
+		db = db.Where("product_id=?", v)
+	}
+
+	if v := params.Status; v != "" {
+		db = db.Where("status=?", v)
+	}
 
 	if len(opt.SelectFields) > 0 {
 		db = db.Select(opt.SelectFields)

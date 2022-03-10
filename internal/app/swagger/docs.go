@@ -276,6 +276,263 @@ const docTemplate_swagger = `{
                 }
             }
         },
+        "/api/v1/devices": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "tags": [
+                    "设备"
+                ],
+                "summary": "查询数据",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "分页索引",
+                        "name": "current",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "分页大小",
+                        "name": "pageSize",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Response Data",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/schema.ListResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "list": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/schema.Device"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "{error:{code:9999,message:invalid signature}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "500": {
+                        "description": "{error:{code:0,message:internal server error}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "tags": [
+                    "设备"
+                ],
+                "summary": "创建数据",
+                "parameters": [
+                    {
+                        "description": "创建数据",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/schema.Device"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/schema.IDResult"
+                        }
+                    },
+                    "400": {
+                        "description": "{error:{code:0,message:bad request}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "401": {
+                        "description": "{error:{code:9999,message:invalid signature}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "500": {
+                        "description": "{error:{code:0,message:internal server error}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/devices/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "tags": [
+                    "设备"
+                ],
+                "summary": "查询指定数据",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "唯一标识",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/schema.Device"
+                        }
+                    },
+                    "400": {
+                        "description": "{error:{code:0,message:bad request}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "401": {
+                        "description": "{error:{code:9999,message:invalid signature}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "500": {
+                        "description": "{error:{code:0,message:internal server error}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "tags": [
+                    "设备"
+                ],
+                "summary": "更新数据",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "唯一标识",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "更新数据",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/schema.Device"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{status:OK}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.StatusResult"
+                        }
+                    },
+                    "400": {
+                        "description": "{error:{code:0,message:bad request}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "401": {
+                        "description": "{error:{code:9999,message:invalid signature}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "500": {
+                        "description": "{error:{code:0,message:internal server error}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "tags": [
+                    "设备"
+                ],
+                "summary": "删除数据",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "唯一标识",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{status:OK}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.StatusResult"
+                        }
+                    },
+                    "401": {
+                        "description": "{error:{code:9999,message:invalid signature}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "500": {
+                        "description": "{error:{code:0,message:internal server error}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/firmwares": {
             "get": {
                 "security": [
@@ -1911,6 +2168,263 @@ const docTemplate_swagger = `{
                 }
             }
         },
+        "/api/v1/upgrades": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "tags": [
+                    "更新记录"
+                ],
+                "summary": "查询数据",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "分页索引",
+                        "name": "current",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "分页大小",
+                        "name": "pageSize",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Response Data",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/schema.ListResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "list": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/schema.Upgrade"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "{error:{code:9999,message:invalid signature}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "500": {
+                        "description": "{error:{code:0,message:internal server error}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "tags": [
+                    "更新记录"
+                ],
+                "summary": "创建数据",
+                "parameters": [
+                    {
+                        "description": "创建数据",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/schema.Upgrade"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/schema.IDResult"
+                        }
+                    },
+                    "400": {
+                        "description": "{error:{code:0,message:bad request}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "401": {
+                        "description": "{error:{code:9999,message:invalid signature}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "500": {
+                        "description": "{error:{code:0,message:internal server error}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/upgrades/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "tags": [
+                    "更新记录"
+                ],
+                "summary": "查询指定数据",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "唯一标识",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/schema.Upgrade"
+                        }
+                    },
+                    "400": {
+                        "description": "{error:{code:0,message:bad request}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "401": {
+                        "description": "{error:{code:9999,message:invalid signature}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "500": {
+                        "description": "{error:{code:0,message:internal server error}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "tags": [
+                    "更新记录"
+                ],
+                "summary": "更新数据",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "唯一标识",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "更新数据",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/schema.Upgrade"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{status:OK}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.StatusResult"
+                        }
+                    },
+                    "400": {
+                        "description": "{error:{code:0,message:bad request}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "401": {
+                        "description": "{error:{code:9999,message:invalid signature}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "500": {
+                        "description": "{error:{code:0,message:internal server error}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "tags": [
+                    "更新记录"
+                ],
+                "summary": "删除数据",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "唯一标识",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{status:OK}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.StatusResult"
+                        }
+                    },
+                    "401": {
+                        "description": "{error:{code:9999,message:invalid signature}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "500": {
+                        "description": "{error:{code:0,message:internal server error}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/users": {
             "get": {
                 "security": [
@@ -2305,6 +2819,58 @@ const docTemplate_swagger = `{
                 }
             }
         },
+        "schema.Device": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "failure": {
+                    "description": "失败次数",
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "0"
+                },
+                "name": {
+                    "description": "设备名称",
+                    "type": "string"
+                },
+                "product_id": {
+                    "type": "string",
+                    "example": "0"
+                },
+                "sn": {
+                    "description": "设备SN",
+                    "type": "string"
+                },
+                "stage": {
+                    "description": "设备所属阶段",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "设备更新状态",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "upgrade_list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/schema.Upgrade"
+                    }
+                },
+                "version": {
+                    "description": "当前版本",
+                    "type": "string"
+                }
+            }
+        },
         "schema.ErrorItem": {
             "type": "object",
             "properties": {
@@ -2333,6 +2899,10 @@ const docTemplate_swagger = `{
                 "created_at": {
                     "type": "string"
                 },
+                "failure": {
+                    "description": "失败次数",
+                    "type": "integer"
+                },
                 "id": {
                     "type": "string",
                     "example": "0"
@@ -2346,6 +2916,10 @@ const docTemplate_swagger = `{
                 },
                 "size": {
                     "description": "大小",
+                    "type": "string"
+                },
+                "stage": {
+                    "description": "固件阶段 dev or test or release",
                     "type": "string"
                 },
                 "status": {
@@ -2785,6 +3359,52 @@ const docTemplate_swagger = `{
                 },
                 "old_password": {
                     "description": "旧密码(md5加密)",
+                    "type": "string"
+                }
+            }
+        },
+        "schema.Upgrade": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "device_id": {
+                    "type": "string",
+                    "example": "0"
+                },
+                "failure": {
+                    "description": "失败次数",
+                    "type": "integer"
+                },
+                "firmware_id": {
+                    "type": "string",
+                    "example": "0"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "0"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "size": {
+                    "description": "大小",
+                    "type": "string"
+                },
+                "stage": {
+                    "description": "固件阶段 dev or test or release",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "更新结果",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "version": {
+                    "description": "版本号",
                     "type": "string"
                 }
             }
