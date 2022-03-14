@@ -15,4 +15,5 @@ var ServiceSet = wire.NewSet(
 	ClientSet,
 	DeviceSet,
 	UpgradeSet,
+	RemoteSet,
 ) // end

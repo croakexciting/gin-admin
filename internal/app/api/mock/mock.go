@@ -13,4 +13,5 @@ var MockSet = wire.NewSet(
 	FirmwareSet,
 	DeviceSet,
 	UpgradeSet,
+	RemoteSet,
 ) // end

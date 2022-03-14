@@ -12,6 +12,7 @@ import (
 	"dishes-admin-mod/internal/app/dao/firmware"
 	"dishes-admin-mod/internal/app/dao/menu"
 	"dishes-admin-mod/internal/app/dao/product"
+	"dishes-admin-mod/internal/app/dao/remote"
 	"dishes-admin-mod/internal/app/dao/role"
 	"dishes-admin-mod/internal/app/dao/upgrade"
 	"dishes-admin-mod/internal/app/dao/user"
@@ -33,6 +34,7 @@ var RepoSet = wire.NewSet(
 	firmware.FirmwareSet,
 	device.DeviceSet,
 	upgrade.UpgradeSet,
+	remote.RemoteSet,
 ) // end
 
 // Define repo type alias
@@ -50,6 +52,7 @@ type (
 	FirmwareRepo           = firmware.FirmwareRepo
 	DeviceRepo             = device.DeviceRepo
 	UpgradeRepo            = upgrade.UpgradeRepo
+	RemoteRepo             = remote.RemoteRepo
 ) // end
 
 // Auto migration for given models
@@ -72,5 +75,6 @@ func AutoMigrate(db *gorm.DB) error {
 		new(firmware.Firmware),
 		new(device.Device),
 		new(upgrade.Upgrade),
+		new(remote.Remote),
 	) // end
 }

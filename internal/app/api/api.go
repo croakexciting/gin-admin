@@ -13,4 +13,5 @@ var APISet = wire.NewSet(
 	ClientSet,
 	DeviceSet,
 	UpgradeSet,
+	RemoteSet,
 ) // end

@@ -28,9 +28,9 @@ func (a SchemaUpgrade) ToUpgrade() *Upgrade {
 // Upgrade entity
 type Upgrade struct {
 	util.Model
-	DeviceID   uint64 `gorm:"index;not null;"` // 设备 ID
-	FirmwareID uint64 `gorm:"index;not null;"` // 固件 ID
-	Name       string `gorm:"size:200"`
+	DeviceID   uint64 `gorm:"index;not null;"`  // 设备 ID
+	FirmwareID uint64 `gorm:"index;not null;"`  // 固件 ID
+	Name       string `gorm:"size:200"`         // 名称
 	Version    string `gorm:"size:50;"`         // 版本号
 	Size       string `gorm:"size:200;"`        // 大小
 	Status     string `gorm:"size:50;"`         // 更新结果

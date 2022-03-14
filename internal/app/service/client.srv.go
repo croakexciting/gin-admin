@@ -20,6 +20,7 @@ type ClientSrv struct {
 	DeviceRepo  *dao.DeviceRepo
 	UpgradeRepo *dao.UpgradeRepo
 	Update      *update.Update
+	RemoteRepo  *dao.RemoteRepo
 }
 
 func (a *ClientSrv) updateRoutine(ctx context.Context, upgrade_id uint64) {
@@ -108,10 +109,22 @@ func (a *ClientSrv) UpdateEvent(ctx context.Context, upgrade_id uint64, item sch
 	return nil
 }
 
+/*
 func (a *ClientSrv) WireguardCommand() {
 
 }
 
-func (a *ClientSrv) WireguardEvent() {
+func (a *ClientSrv) WireguardEvent(ctx context.Context, item schema.Client, DeviceID uint64) error {
+	result, err := a.RemoteRepo.Query(ctx, schema.RemoteQueryParam{})
+	if err != nil {
+		return err
+	}
 
+	ip_address := "172.20.1." + strconv.Itoa(len(result.Data)+2)
+
+	err := a.RemoteRepo.Create(ctx, schema.Remote{
+		DeviceID: DeviceID,
+		Address:  item,
+	})
 }
+*/

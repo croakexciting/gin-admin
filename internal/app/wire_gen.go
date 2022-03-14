@@ -13,6 +13,7 @@ import (
 	"dishes-admin-mod/internal/app/dao/firmware"
 	"dishes-admin-mod/internal/app/dao/menu"
 	"dishes-admin-mod/internal/app/dao/product"
+	"dishes-admin-mod/internal/app/dao/remote"
 	"dishes-admin-mod/internal/app/dao/role"
 	"dishes-admin-mod/internal/app/dao/upgrade"
 	"dishes-admin-mod/internal/app/dao/user"
@@ -192,6 +193,16 @@ func BuildInjector() (*Injector, func(), error) {
 	upgradeAPI := &api.UpgradeAPI{
 		UpgradeSrv: upgradeSrv,
 	}
+	remoteRepo := &remote.RemoteRepo{
+		DB: db,
+	}
+	remoteSrv := &service.RemoteSrv{
+		TransRepo:  trans,
+		RemoteRepo: remoteRepo,
+	}
+	remoteAPI := &api.RemoteAPI{
+		RemoteSrv: remoteSrv,
+	}
 	routerRouter := &router.Router{
 		Auth:           auther,
 		CasbinEnforcer: syncedEnforcer,
@@ -206,6 +217,7 @@ func BuildInjector() (*Injector, func(), error) {
 		ClientAPI:      clientAPI,
 		DeviceAPI:      deviceAPI,
 		UpgradeAPI:     upgradeAPI,
+		RemoteAPI:      remoteAPI,
 	}
 	engine := InitGinEngine(routerRouter)
 	injector := &Injector{

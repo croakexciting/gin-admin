@@ -37,6 +37,7 @@ type Router struct {
 	ClientAPI      *api.ClientAPI
 	DeviceAPI      *api.DeviceAPI
 	UpgradeAPI     *api.UpgradeAPI
+	RemoteAPI      *api.RemoteAPI
 } // end
 
 func (a *Router) Register(app *gin.Engine) error {
@@ -174,6 +175,16 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 			gUpgrade.POST("", a.UpgradeAPI.Create)
 			gUpgrade.PUT(":id", a.UpgradeAPI.Update)
 			gUpgrade.DELETE(":id", a.UpgradeAPI.Delete)
+		}
+
+		gRemote := v1.Group("remotes")
+		{
+			gRemote.GET("", a.RemoteAPI.Query)
+			gRemote.GET(":id", a.RemoteAPI.Get)
+			gRemote.POST("", a.RemoteAPI.Create)
+			gRemote.PUT(":id", a.RemoteAPI.Update)
+			gRemote.DELETE(":id", a.RemoteAPI.Delete)
+
 		}
 
 	} // v1 end
